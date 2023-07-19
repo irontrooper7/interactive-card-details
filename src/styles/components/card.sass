@@ -1,0 +1,46 @@
+.card
+    color: $white
+    height: 245px
+    padding: 20px
+    width: 100%
+    max-width: 447px
+    margin: auto
+    letter-spacing: 2px
+    &.card-front
+        background: url('/assets/bg-card-front.png') no-repeat
+        background-size: 100% 100%
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        margin-bottom: 40px
+        h3
+            font-size: 28px
+            text-align: center
+        p
+            font-size: 12px
+    &.card-back
+        background: url('/assets/bg-card-back.png') no-repeat
+        background-size: 100% 100%
+        position: relative
+        p
+            font-size: 16px
+            position: absolute
+            right: 0
+            top: 50%
+            transform: translate(calc( -100% - 16px ), calc( -50% - 2px ))
+
+
+// Responsive Desktop
+@mixin card-desktop
+    .card
+        height: 245px
+        padding: 30px
+        margin: auto
+        &.card-front
+            transform: translateX(-10%)
+            h3
+                font-size: 30px
+                text-align: center
+            p
+                font-size: 14px
+    
