@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Card from './Card';
@@ -6,25 +6,27 @@ import Card from './Card';
 const DataUserCardSchema = Yup.object().shape({
 	userCardNumber: Yup.string()
 		.matches(/^[0-9]+$/, 'Solo se permiten números')
-		.max(16, 'La fecha debe tener maximo 2 digitos')
-		.required('Por favor ingresa tu numero de tarjeta'),
+		.min(16, 'El número de tarjeta debe tener 16 dígitos')
+		.max(16, 'El número de tarjeta debe tener 16 dígitos')
+		.required('Por favor ingresa tu número de tarjeta'),
 	userCardName: Yup.string()
-		.matches(/^[0-9]+$/, 'Solo se permiten números')
+		.matches(/^([A-Za-z\u00C0-\u00D6\u00D8-\u00f6\u00f8-\u00ff\s]*)$/gi, 'No se permiten caracteres especiales')
 		.required('Por favor ingresa tu nombre'),
 	userCardMonth: Yup.string()
 		.matches(/^[0-9]+$/, 'Solo se permiten números')
-		.max(2, 'La fecha debe tener maximo 2 digitos')
+		.max(2, 'El mes de vencimiento debe tener mínimo 2 digitos')
+		.max(2, 'El mes de vencimiento debe tener máximo 2 digitos')
 		.required('Por favor ingresa un mes'),
 	userCardYear: Yup.string()
 		.matches(/^[0-9]+$/, 'Solo se permiten números')
-		.min(4, 'La fecha debe tener 4 digitos')
-		.max(4, 'La fecha debe tener 4 digitos')
+		.max(2, 'El año de vencimiento debe tener mínimo 2 digitos')
+		.max(2, 'El año de vencimiento debe tener máximo 2 digitos')
 		.required('Por favor ingresa un año'),
 	userCardCVV: Yup.string()
 		.matches(/^[0-9]+$/, 'Solo se permiten números')
-		.min(3, 'La fecha debe tener 3 digitos')
-		.max(3, 'La fecha debe tener 3 digitos')
-		.required('Por favor ingresa un año')
+		.min(3, 'Tu código CVC debe tener 3 3 digitos')
+		.max(3, 'Tu código CVC debe tener 3 digitos')
+		.required('Por favor ingresa tu codigo CVC')
 });
 
 export default function SubmitForm() {
@@ -33,7 +35,27 @@ export default function SubmitForm() {
     const [cardName, setCardName] = useState('Nombre ApellidoP ApellidoM');
     const [cardMonth, setCardMonth] = useState('00');
 	const [cardYear, setCardYear] = useState('00');
-    const [cardCVV, setCardCVV] = useState('000');
+    const [cardCVC, setCardCVC] = useState('000');
+
+	const cardNameHandleChange = (event) => {
+		setCardName(event.target.value);
+	};
+
+	const cardNumberHandleChange = (event) => {
+		setCardNumber(event.target.value);
+	};
+
+	const cardMonthHandleChange = (event) => {
+		setCardMonth(event.target.value);
+	};
+
+	const cardYearHandleChange = (event) => {
+		setCardYear(event.target.value);
+	};
+
+	const cardCVCHandleChange = (event) => {
+		setCardCVC(event.target.value);
+	};
 
 	return (
 		<div className='form-container columns is-gapless'>
@@ -45,7 +67,7 @@ export default function SubmitForm() {
 					month={cardMonth}
 					year={cardYear}
 				/>
-				<Card cvv={cardCVV}/>
+				<Card cvc={cardCVC}/>
 			</div>
 			<div className='column'>
 				<div className='form'>
@@ -61,14 +83,14 @@ export default function SubmitForm() {
 								<div className='field'>
 									<label className='label'>CARDHOLDER NAME</label>
 									<div className='control'>
-										<Field className="input" name="userCardName" placeholder="e.g. Jane Applessed" />
+										<Field className="input" name="userCardName" placeholder="e.g. Jane Applessed" onKeyUp={cardNameHandleChange} />
 									</div>
 									{errors.userCardName && touched.userCardName ? ( <p className="help is-danger">{errors.userCardName}</p> ) : null}
 								</div>
 								<div className='field'>
 									<label className='label'>CARD NUMBER</label>
 									<div className='control'>
-										<Field className="input" name="userCardNumber" placeholder="e.g. 1234 5678 9123 0000" />
+										<Field className="input" name="userCardNumber" placeholder="e.g. 1234 5678 9123 0000" onKeyUp={cardNumberHandleChange}/>
 									</div>
 									{errors.userCardNumber && touched.userCardNumber ? ( <p className="help is-danger">{errors.userCardNumber}</p> ) : null}
 								</div>
@@ -77,10 +99,10 @@ export default function SubmitForm() {
 										<label className='label'>EXP. DATE (MM/YY)</label>
 										<div className='columns'>
 											<div className='column is-6 control'>
-												<Field className="input" name="userCardMonth" placeholder="MM" />
+												<Field className="input" name="userCardMonth" placeholder="MM" onKeyUp={cardMonthHandleChange}/>
 											</div>
 											<div className='column is-6 control'>
-												<Field className="input" name="userCardYear" placeholder="YY" />
+												<Field className="input" name="userCardYear" placeholder="YY" onKeyUp={cardYearHandleChange}/>
 											</div>
 										</div>
 										{errors.userCardMonth && touched.userCardMonth ? ( <p className="help is-danger">{errors.userCardMonth}</p> ) : null}
@@ -89,7 +111,7 @@ export default function SubmitForm() {
 									<div className='column is-6 field'>
 										<label className='label'>CVC</label>
 										<div className='control'>
-											<Field className="input" name="userCardCVV" placeholder="	E.G. 123" />
+											<Field className="input" name="userCardCVV" placeholder="E.G. 123" onKeyUp={cardCVCHandleChange}/>
 										</div>
 										{errors.userCardCVV && touched.userCardCVV ? ( <p className="help is-danger">{errors.userCardCVV}</p> ) : null}
 									</div>
