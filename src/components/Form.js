@@ -31,104 +31,115 @@ const DataUserCardSchema = Yup.object().shape({
 
 export default function SubmitForm() {
 
+	const [formComplete, setFormComplete] = useState(false)
 	const [cardNumber, setCardNumber] = useState('0000000000000000');
     const [cardName, setCardName] = useState('Nombre ApellidoP ApellidoM');
     const [cardMonth, setCardMonth] = useState('00');
 	const [cardYear, setCardYear] = useState('00');
     const [cardCVC, setCardCVC] = useState('000');
 
-	const cardNameHandleChange = (event) => {
-		setCardName(event.target.value);
-	};
+	// const cardNameHandleChange = (event) => {
+	// 	setCardName(event.target.value);
+	// };
 
-	const cardNumberHandleChange = (event) => {
-		setCardNumber(event.target.value);
-	};
+	// const cardNumberHandleChange = (event) => {
+	// 	setCardNumber(event.target.value);
+	// };
 
-	const cardMonthHandleChange = (event) => {
-		setCardMonth(event.target.value);
-	};
+	// const cardMonthHandleChange = (event) => {
+	// 	setCardMonth(event.target.value);
+	// };
 
-	const cardYearHandleChange = (event) => {
-		setCardYear(event.target.value);
-	};
+	// const cardYearHandleChange = (event) => {
+	// 	setCardYear(event.target.value);
+	// };
 
-	const cardCVCHandleChange = (event) => {
-		setCardCVC(event.target.value);
-	};
+	// const cardCVCHandleChange = (event) => {
+	// 	setCardCVC(event.target.value);
+	// };
 
 	return (
 		<div className='form-container columns is-gapless'>
-			<div className='column'>
-				<Card
-					type='front-card'
-					number={cardNumber}
-					name={cardName}
-					month={cardMonth}
-					year={cardYear}
-				/>
-				<Card cvc={cardCVC}/>
+			<div className='column is-6'>
+				<div className='card-container'>
+					<Card cvc={cardCVC}/>
+					<Card
+						type='front-card'
+						// number={cardNumber}
+						// name={cardName}
+						// month={cardMonth}
+						// year={cardYear}
+					/>
+				</div>
 			</div>
-			<div className='column'>
+			<div className='column is-6'>
 				<div className='form'>
-					<Formik
-						initialValues={{ userCardNumber: '', userCardName: '', userCardMonth: '', userCardYear: '', userCardCVV: ''}}
-						validationSchema={DataUserCardSchema}
-						onSubmit={values => {
-							console.log(values);
-						}}
-					>
-						{({ errors, touched }) => (		
-							<Form>
-								<div className='field'>
-									<label className='label'>CARDHOLDER NAME</label>
-									<div className='control'>
-										<Field className="input" name="userCardName" placeholder="e.g. Jane Applessed" onKeyUp={cardNameHandleChange} />
-									</div>
-									{errors.userCardName && touched.userCardName ? ( <p className="help is-danger">{errors.userCardName}</p> ) : null}
-								</div>
-								<div className='field'>
-									<label className='label'>CARD NUMBER</label>
-									<div className='control'>
-										<Field className="input" name="userCardNumber" placeholder="e.g. 1234 5678 9123 0000" onKeyUp={cardNumberHandleChange}/>
-									</div>
-									{errors.userCardNumber && touched.userCardNumber ? ( <p className="help is-danger">{errors.userCardNumber}</p> ) : null}
-								</div>
-								<div className='columns mt-3'>
-									<div className='column is-6 field'>
-										<label className='label'>EXP. DATE (MM/YY)</label>
-										<div className='columns'>
-											<div className='column is-6 control'>
-												<Field className="input" name="userCardMonth" placeholder="MM" onKeyUp={cardMonthHandleChange}/>
-											</div>
-											<div className='column is-6 control'>
-												<Field className="input" name="userCardYear" placeholder="YY" onKeyUp={cardYearHandleChange}/>
-											</div>
-										</div>
-										{errors.userCardMonth && touched.userCardMonth ? ( <p className="help is-danger">{errors.userCardMonth}</p> ) : null}
-										{errors.userCardYear && touched.userCardYear ? ( <p className="help is-danger">{errors.userCardYear}</p> ) : null}
-									</div>
-									<div className='column is-6 field'>
-										<label className='label'>CVC</label>
+					{
+						formComplete === false ?
+						<Formik
+							initialValues={{ userCardNumber: '', userCardName: '', userCardMonth: '', userCardYear: '', userCardCVV: ''}}
+							validationSchema={DataUserCardSchema}
+							onSubmit={values => {
+								console.log(values);
+								setFormComplete(true);
+							}}
+						>
+							{({ errors, touched }) => (		
+								<Form>
+									<div className='field'>
+										<label className='label'>CARDHOLDER NAME</label>
 										<div className='control'>
-											<Field className="input" name="userCardCVV" placeholder="E.G. 123" onKeyUp={cardCVCHandleChange}/>
+											<Field className="input" name="userCardName" placeholder="e.g. Jane Applessed"/>
 										</div>
-										{errors.userCardCVV && touched.userCardCVV ? ( <p className="help is-danger">{errors.userCardCVV}</p> ) : null}
+										{errors.userCardName && touched.userCardName ? ( <p className="help is-danger">{errors.userCardName}</p> ) : null}
 									</div>
-								</div>
-								<div className='field submit-field m-0'>
-									<div className='control'>
-										<button className='button' type="submit">Confirm</button>
+									<div className='field'>
+										<label className='label'>CARD NUMBER</label>
+										<div className='control'>
+											<Field className="input" name="userCardNumber" placeholder="e.g. 1234 5678 9123 0000"/>
+										</div>
+										{errors.userCardNumber && touched.userCardNumber ? ( <p className="help is-danger">{errors.userCardNumber}</p> ) : null}
 									</div>
-								</div>
-							</Form>
-						)}
-					</Formik>
-					{/* <div className='form-results'>
-						<h2><span>{yearValue ? yearValue : '--'}</span> years</h2>
-						<h2><span>{monthValue ? monthValue : '--'}</span> months</h2>
-						<h2><span>{dayValue ? dayValue : '--'}</span> days</h2>
-					</div> */}
+									<div className='columns mt-3'>
+										<div className='column is-6 field'>
+											<label className='label'>EXP. DATE (MM/YY)</label>
+											<div className='columns'>
+												<div className='column is-6 control'>
+													<Field className="input" name="userCardMonth" placeholder="MM"/>
+												</div>
+												<div className='column is-6 control'>
+													<Field className="input" name="userCardYear" placeholder="YY"/>
+												</div>
+											</div>
+											{errors.userCardMonth && touched.userCardMonth ? ( <p className="help is-danger">{errors.userCardMonth}</p> ) : null}
+											{errors.userCardYear && touched.userCardYear ? ( <p className="help is-danger">{errors.userCardYear}</p> ) : null}
+										</div>
+										<div className='column is-6 field'>
+											<label className='label'>CVC</label>
+											<div className='control'>
+												<Field className="input" name="userCardCVV" placeholder="E.G. 123"/>
+											</div>
+											{errors.userCardCVV && touched.userCardCVV ? ( <p className="help is-danger">{errors.userCardCVV}</p> ) : null}
+										</div>
+									</div>
+									<div className='field submit-field m-0'>
+										<div className='control'>
+											<button className='button' type="submit">Confirm</button>
+										</div>
+									</div>
+								</Form>
+							)}
+						</Formik>
+						:
+						<div className='form-message'>
+							<figure className="image is-96x96">
+								<img src="/assets/icon-complete.svg" />
+							</figure>
+							<h2>THANK YOU!</h2>
+							<p>We've added your card details</p>
+							<button className='button' onClick={() => setFormComplete(false)}>Continue</button>
+						</div>
+					}
 				</div>
 			</div>
         </div>

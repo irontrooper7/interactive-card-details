@@ -1,10 +1,9 @@
 .card
     color: $white
-    height: 245px
+    height: 200px
     padding: 20px
     width: 100%
-    max-width: 447px
-    margin: auto
+    max-width: 347px
     letter-spacing: 2px
     &.card-front
         background: url('/assets/bg-card-front.png') no-repeat
@@ -12,9 +11,9 @@
         display: flex
         flex-direction: column
         justify-content: space-between
-        margin-bottom: 20px
+        transform: translateY(-87px)
         h3
-            font-size: 28px
+            font-size: 20px
             text-align: center
         p
             font-size: 12px
@@ -25,24 +24,45 @@
         justify-content: flex-end
         align-items: center
         padding: 30px 50px 35px
+        margin: 0px 0px 0px auto
         p
             font-size: 16px
             right: 0
             top: 50%
 
+.card-container
+    display: flex
+    flex-direction: column
+    margin-bottom: -80px
 
 // Responsive Desktop
 @mixin card-desktop
     .card
         height: 245px
-        padding: 30px
-        margin: auto
+        padding: 30px 10px
+        max-width: 447px
         &.card-front
-            transform: translateX(-10%)
-            margin-bottom: 0px
+            margin-bottom: 20px
+            transform: translateY(0px)
             h3
-                font-size: 30px
+                font-size: 24px
                 text-align: center
             p
                 font-size: 14px
-    
+        &.card-back
+            margin: auto
+    .card-container
+        display: flex
+        flex-direction: column-reverse
+        align-items: flex-start
+        padding: 0px 10px
+
+// Responsive Desktop
+@mixin card-desktop_full
+    .card
+        padding: 30px
+        &.card-front
+            h3
+                font-size: 28px
+        &.card-back
+            margin: auto
