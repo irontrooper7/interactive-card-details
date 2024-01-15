@@ -16,12 +16,12 @@ const DataUserCardSchema = Yup.object().shape({
 		.matches(/^[0-9]+$/, 'Solo se permiten números')
 		.max(2, 'El mes de vencimiento debe tener mínimo 2 digitos')
 		.max(2, 'El mes de vencimiento debe tener máximo 2 digitos')
-		.required('Por favor ingresa un mes'),
+		.required('Por favor ingresa la fecha de expiración'),
 	userCardYear: Yup.string()
 		.matches(/^[0-9]+$/, 'Solo se permiten números')
 		.max(2, 'El año de vencimiento debe tener mínimo 2 digitos')
 		.max(2, 'El año de vencimiento debe tener máximo 2 digitos')
-		.required('Por favor ingresa un año'),
+		.required('Por favor ingresa la fecha de expiración'),
 	userCardCVV: Yup.string()
 		.matches(/^[0-9]+$/, 'Solo se permiten números')
 		.min(3, 'Tu código CVC debe tener 3 3 digitos')
@@ -38,26 +38,6 @@ export default function SubmitForm() {
 	const [cardYear, setCardYear] = useState('00');
     const [cardCVC, setCardCVC] = useState('000');
 
-	// const cardNameHandleChange = (event) => {
-	// 	setCardName(event.target.value);
-	// };
-
-	// const cardNumberHandleChange = (event) => {
-	// 	setCardNumber(event.target.value);
-	// };
-
-	// const cardMonthHandleChange = (event) => {
-	// 	setCardMonth(event.target.value);
-	// };
-
-	// const cardYearHandleChange = (event) => {
-	// 	setCardYear(event.target.value);
-	// };
-
-	// const cardCVCHandleChange = (event) => {
-	// 	setCardCVC(event.target.value);
-	// };
-
 	return (
 		<div className='form-container columns is-gapless'>
 			<div className='column is-6'>
@@ -65,10 +45,10 @@ export default function SubmitForm() {
 					<Card cvc={cardCVC}/>
 					<Card
 						type='front-card'
-						// number={cardNumber}
-						// name={cardName}
-						// month={cardMonth}
-						// year={cardYear}
+						name={cardName}
+						number={cardNumber}
+						month={cardMonth}
+						year={cardYear}
 					/>
 				</div>
 			</div>
@@ -89,37 +69,66 @@ export default function SubmitForm() {
 									<div className='field'>
 										<label className='label'>CARDHOLDER NAME</label>
 										<div className='control'>
-											<Field className="input" name="userCardName" placeholder="e.g. Jane Applessed"/>
+											<Field
+												className="input"
+												name="userCardName"
+												placeholder="e.g. Jane Applessed"
+												onKeyUp={(e) => setCardName(e.target.value)}
+											/>
 										</div>
-										{errors.userCardName && touched.userCardName ? ( <p className="help is-danger">{errors.userCardName}</p> ) : null}
+										{errors.userCardName && touched.userCardName ? ( <p className="help is-danger mb-0">{errors.userCardName}</p> ) : null}
 									</div>
 									<div className='field'>
 										<label className='label'>CARD NUMBER</label>
 										<div className='control'>
-											<Field className="input" name="userCardNumber" placeholder="e.g. 1234 5678 9123 0000"/>
+											<Field
+												className="input"
+												name="userCardNumber"
+												placeholder="e.g. 1234 5678 9123 0000"
+												maxLength='16'
+												onKeyUp={(e) => setCardNumber(e.target.value)}
+											/>
 										</div>
-										{errors.userCardNumber && touched.userCardNumber ? ( <p className="help is-danger">{errors.userCardNumber}</p> ) : null}
+										{errors.userCardNumber && touched.userCardNumber ? ( <p className="help is-danger mb-0">{errors.userCardNumber}</p> ) : null}
 									</div>
-									<div className='columns mt-3'>
-										<div className='column is-6 field'>
+									<div className='columns my-3 mx-0'>
+										<div className='column is-6 field p-0'>
 											<label className='label'>EXP. DATE (MM/YY)</label>
-											<div className='columns'>
-												<div className='column is-6 control'>
-													<Field className="input" name="userCardMonth" placeholder="MM"/>
+											<div className='columns m-0'>
+												<div className='column is-6 control pt-0 pb-0 pl-0 pr-3'>
+													<Field 
+														className="input"
+														name="userCardMonth"
+														placeholder="MM"
+														maxLength='2'
+														onKeyUp={(e) => setCardMonth(e.target.value)}
+													/>
 												</div>
-												<div className='column is-6 control'>
-													<Field className="input" name="userCardYear" placeholder="YY"/>
+												<div className='column is-6 control pt-0 pb-0 pl-0 pr-3'>
+													<Field 
+														className="input"
+														name="userCardYear"
+														placeholder="YY"
+														maxLength='2'
+														onKeyUp={(e) => setCardYear(e.target.value)}
+													/>
 												</div>
 											</div>
-											{errors.userCardMonth && touched.userCardMonth ? ( <p className="help is-danger">{errors.userCardMonth}</p> ) : null}
-											{errors.userCardYear && touched.userCardYear ? ( <p className="help is-danger">{errors.userCardYear}</p> ) : null}
+											{errors.userCardMonth || errors.userCardYear && touched.userCardMonth || touched.userCardYear ? ( <p className="help is-danger mb-0">{errors.userCardMonth}</p> ) : null}
+											{/* {errors.userCardYear && touched.userCardYear ? ( <p className="help is-danger mb-0">{errors.userCardYear}</p> ) : null} */}
 										</div>
-										<div className='column is-6 field'>
+										<div className='column is-6 field p-0'>
 											<label className='label'>CVC</label>
 											<div className='control'>
-												<Field className="input" name="userCardCVV" placeholder="E.G. 123"/>
+												<Field
+													className="input"
+													name="userCardCVV"
+													placeholder="E.G. 123"
+													maxLength='3'
+													onKeyUp={(e) => setCardCVC(e.target.value)}
+												/>
 											</div>
-											{errors.userCardCVV && touched.userCardCVV ? ( <p className="help is-danger">{errors.userCardCVV}</p> ) : null}
+											{errors.userCardCVV && touched.userCardCVV ? ( <p className="help is-danger mb-0">{errors.userCardCVV}</p> ) : null}
 										</div>
 									</div>
 									<div className='field submit-field m-0'>
