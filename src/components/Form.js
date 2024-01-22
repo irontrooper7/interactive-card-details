@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import Card from './Card';
@@ -32,11 +32,11 @@ const DataUserCardSchema = Yup.object().shape({
 export default function SubmitForm() {
 
 	const [formComplete, setFormComplete] = useState(false)
-	const [cardNumber, setCardNumber] = useState('0000000000000000');
-    const [cardName, setCardName] = useState('Nombre ApellidoP ApellidoM');
-    const [cardMonth, setCardMonth] = useState('00');
-	const [cardYear, setCardYear] = useState('00');
-    const [cardCVC, setCardCVC] = useState('000');
+	const [cardNumber, setCardNumber] = useState('');
+    const [cardName, setCardName] = useState('');
+    const [cardMonth, setCardMonth] = useState('');
+	const [cardYear, setCardYear] = useState('');
+    const [cardCVC, setCardCVC] = useState('');
 
 	return (
 		<div className='form-container columns is-gapless'>
@@ -60,8 +60,11 @@ export default function SubmitForm() {
 							initialValues={{ userCardNumber: '', userCardName: '', userCardMonth: '', userCardYear: '', userCardCVV: ''}}
 							validationSchema={DataUserCardSchema}
 							onSubmit={values => {
-								console.log(values);
 								setFormComplete(true);
+								console.log(values);
+								setTimeout(() => {
+									setFormComplete(false)
+								}, 5000)
 							}}
 						>
 							{({ errors, touched }) => (		
@@ -114,8 +117,7 @@ export default function SubmitForm() {
 													/>
 												</div>
 											</div>
-											{errors.userCardMonth || errors.userCardYear && touched.userCardMonth || touched.userCardYear ? ( <p className="help is-danger mb-0">{errors.userCardMonth}</p> ) : null}
-											{/* {errors.userCardYear && touched.userCardYear ? ( <p className="help is-danger mb-0">{errors.userCardYear}</p> ) : null} */}
+											{errors.userCardMonth && errors.userCardYear || touched.userCardMonth && touched.userCardYear ? ( <p className="help is-danger mb-0">{errors.userCardMonth}</p> ) : null}
 										</div>
 										<div className='column is-6 field p-0'>
 											<label className='label'>CVC</label>
