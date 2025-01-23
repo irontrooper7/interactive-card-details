@@ -38,6 +38,15 @@ export default function SubmitForm() {
 	const [cardYear, setCardYear] = useState('');
     const [cardCVC, setCardCVC] = useState('');
 
+	function reset() {
+		setFormComplete(false)
+		setCardNumber('');
+		setCardName('');
+		setCardMonth('');
+		setCardYear('');
+		setCardCVC('');
+	}
+
 	return (
 		<div className='form-container columns is-gapless'>
 			<div className='column is-6'>
@@ -148,7 +157,7 @@ export default function SubmitForm() {
 							</figure>
 							<h2>THANK YOU!</h2>
 							<p>We've added your card details</p>
-							<button className='button' onClick={() => setFormComplete(false)}>Continue</button>
+							<button className='button' onClick={() => reset()}>Continue</button>
 						</div>
 					}
 				</div>
